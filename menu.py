@@ -7,8 +7,7 @@ def display_menu(screen):
     #Loads main menu
     menu_image = pg.image.load('images/menu.png')
     selected_option = 0
-    selector_y = 400
-    selector_speed = 3
+    selector_y = 402
 
     #Main Menu loop
     show_menu = True
@@ -28,8 +27,6 @@ def display_menu(screen):
         screen.blit(menu_image, (0, 0))
 
         selector_x = 250  # X-coordinate of the selector
-        selector_sprite_rect = pg.Rect(*sprites.SELECTOR)  # Convert the selector tuple to a Rect
-        selector_sprite_surface = sprites.menu.subsurface(selector_sprite_rect)  # Extract the selector sprite from the sprite sheet
-        screen.blit(sprites.tile_set, (selector_x, selector_y + selected_option * 48), sprites.SELECTOR)
+        screen.blit(sprites.tile_set, (selector_x, selector_y + selected_option * 46), sprites.SELECTOR) # Draws and moves the selector up or down 46 pixels when up/down pressed
 
         pg.display.flip()
