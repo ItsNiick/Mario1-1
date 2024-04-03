@@ -1,6 +1,7 @@
 import pygame as pg
 from pygame.locals import *
-from menu
+import menu
+import sprites
 
 pg.init()
 

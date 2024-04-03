@@ -11,7 +11,7 @@ background = pg.image.load(path.join(images_folder, 'background.png'))
 foreground = pg.image.load(path.join(images_folder, 'foreground.png'))
 menu = pg.image.load(path.join(images_folder, 'menu.png'))
 digits = pg.image.load(path.join(images_folder, 'digits.png'))
-level_1_1 = Image.open(path.join(images_folder, 'map.pg'))
+level_1_1 = Image.open(path.join(images_folder, 'map.png'))
 
 #Sprite rectangles to retrieve section of sprite sheet
 EMPTY_SPRITE = (240, 48, 48, 48)
