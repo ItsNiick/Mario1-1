@@ -8,10 +8,11 @@ tile_set = pg.image.load(path.join(images_folder, 'tile_set.png'))
 tile_set_flipped = pg.image.load(path.join(images_folder, 'tile_set_flipped.png'))
 text_image = pg.image.load(path.join(images_folder, 'text_image.png'))
 background = pg.image.load(path.join(images_folder, 'background.png'))
+background2 = pg.image.load(path.join(images_folder, 'background2.png'))
 foreground = pg.image.load(path.join(images_folder, 'foreground.png'))
 menu = pg.image.load(path.join(images_folder, 'menu.png'))
 digits = pg.image.load(path.join(images_folder, 'digits.png'))
-level_1_1 = Image.open(path.join(images_folder, 'map.pg'))
+level_1_1 = Image.open(path.join(images_folder, 'map.png'))
 
 #Sprite rectangles to retrieve section of sprite sheet
 EMPTY_SPRITE = (240, 48, 48, 48)
