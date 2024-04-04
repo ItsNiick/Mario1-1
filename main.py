@@ -3,7 +3,6 @@ from pygame.locals import *
 import menu
 import sprites
 from player import Player
-import camera
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 744, 672
 
