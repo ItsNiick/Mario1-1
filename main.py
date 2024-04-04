@@ -41,10 +41,11 @@ while running:
                 player.stop_x_movement()
 
     player_position = player.update()
-    camera_x = max(0, min(camera_x, 10176 - SCREEN_WIDTH))
-    camrea_y = max(0, min(camera_y, 672 - SCREEN_HEIGHT))
-    scroll_speed = int(player.velocity_x)
+    camera_x = max(0, min(player.x - SCREEN_WIDTH // 2, background.get_width() - SCREEN_WIDTH))
+    camera_y = max(0, min(camera_y, 672 - SCREEN_HEIGHT))
+    scroll_speed = int(player.velocity_x * 2)
     background_x -= scroll_speed
+    background_x = max(0, min(background_x, background.get_width() - SCREEN_WIDTH))
 
     if player.velocity_x > 0:
         background_x -= abs(player.velocity_x)
@@ -60,7 +61,7 @@ while running:
         background_x = background.get_width() - SCREEN_WIDTH
 
     #screen.blit(background, (-background_x,0), (camera_x, camera_y, SCREEN_WIDTH, SCREEN_HEIGHT))
-    screen.blit(background, (-background_x,0))
+    screen.blit(background, (-camera_x,0))
 
     player.check_collision()
     player.draw(screen, camera_x, camera_y)

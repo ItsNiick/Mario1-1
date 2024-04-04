@@ -12,8 +12,8 @@ class Player:
         self.velocity_y = 0  # Initial y velocity
         self.is_jumping = False  # Flag to indicate if the player is jumping
         self.jump_speed = -0.1
-        self.gravity = 0.1
-        self.jump_height = y - 150
+        self.gravity = 0.2
+        self.jump_height = y - 200
         self.sprite = sprites.SMALL_MARIO_IDLE  # Initial sprite
 
     def update(self):
