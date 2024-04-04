@@ -49,7 +49,10 @@ class Player:
         self.velocity_y = 0  # Stop vertical movement
 
     def draw(self, screen, camera_x, camera_y):
-        screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), self.sprite)  # Draw player sprite on screen
+        if self.is_jumping or self.y < 552 or self.y > 552:
+            screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), sprites.SMALL_MARIO_JUMP)
+        else:
+            screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), self.sprite)  # Draw player sprite on screen
 
 
     def check_collision(self):

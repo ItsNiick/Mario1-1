@@ -44,21 +44,23 @@ while running:
     camera_x = max(0, min(player.x - SCREEN_WIDTH // 2, background.get_width() - SCREEN_WIDTH))
     camera_y = max(0, min(camera_y, 672 - SCREEN_HEIGHT))
     scroll_speed = int(player.velocity_x * 2)
-    background_x -= scroll_speed
-    background_x = max(0, min(background_x, background.get_width() - SCREEN_WIDTH))
+    #background_x -= scroll_speed
+    #background_x = max(0, min(background_x, background.get_width() - SCREEN_WIDTH))
 
     if player.velocity_x > 0:
         background_x -= abs(player.velocity_x)
-    elif player.velocity_x < 0:
-        background_x += abs(player.velocity_x)
+    #elif player.velocity_x < 0:
+        #background_x += abs(player.velocity_x)
+    background_x = max(0, background_x)
 
-    if player.velocity_x != 0:
-        velocity_int = int(player.velocity_x)
-        background.scroll(-velocity_int, 0)
+    #if player.velocity_x != 0:
+        #velocity_int = int(player.velocity_x)
+        #background.scroll(-velocity_int, 0)
     if background_x < 0:
         background_x = 0
     elif background_x > background.get_width() - SCREEN_WIDTH:
-        background_x = background.get_width() - SCREEN_WIDTH
+        #background_x = background.get_width() - SCREEN_WIDTH
+        pass
 
     #screen.blit(background, (-background_x,0), (camera_x, camera_y, SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(background, (-camera_x,0))
