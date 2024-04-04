@@ -8,14 +8,20 @@ class Player:
         self.y = y  # Initial y position
         self.width = 48  # Player width
         self.height = 48  # Player height
+
         self.velocity_x = 0  # Initial x velocity
         self.velocity_y = 0  # Initial y velocity
+        self.acceleration = 0.01  # Adjust this value to control acceleration
+        self.deceleration = 0.02  # Adjust this value to control deceleration
+
         self.is_jumping = False  # Flag to indicate if the player is jumping
-        self.jump_speed = -0.1
+        self.jump_speed = -0.15
         self.gravity = 0.2
-        self.jump_height = y - 200
+        self.jump_height = y - 240
+        self.can_jump = True
+        
         self.animation_counter = 0
-        self.animation_speed = 1000
+        self.animation_speed = 1500
         self.sprite = sprites.SMALL_MARIO_IDLE  # Initial sprite
 
     def update(self):
@@ -30,19 +36,22 @@ class Player:
         if self.is_jumping and self.y <= self.jump_height:
             self.is_jumping = False
             self.velocity_y = 0
+            self.can_jump = True
 
         return self.x, self.y
 
     def jump(self):
-        if not self.is_jumping:
+        if self.can_jump and self.velocity_y == 0:
             self.is_jumping = True
             self.velocity_y = self.jump_speed
+            self.can_jump = False
 
     def move_left(self):
-        self.velocity_x = -0.1  # Set horizontal velocity for moving left
+        self.velocity_x = -0.075  # Set horizontal velocity for moving left
+
 
     def move_right(self):
-        self.velocity_x = 0.1  # Set horizontal velocity for moving right
+        self.velocity_x = 0.075  # Set horizontal velocity for moving right
 
     def stop_x_movement(self):
         self.velocity_x = 0  # Stop horizontal movement

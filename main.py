@@ -18,6 +18,8 @@ camera_y = 0
 background = sprites.background.convert()
 background_x = 0
 
+
+
 show_menu = True
 while show_menu:
     show_menu = menu.display_menu(screen)
