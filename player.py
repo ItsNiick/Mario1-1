@@ -14,6 +14,8 @@ class Player:
         self.jump_speed = -0.1
         self.gravity = 0.2
         self.jump_height = y - 200
+        self.animation_counter = 0
+        self.animation_speed = 1000
         self.sprite = sprites.SMALL_MARIO_IDLE  # Initial sprite
 
     def update(self):
@@ -51,6 +53,14 @@ class Player:
     def draw(self, screen, camera_x, camera_y):
         if self.is_jumping or self.y < 552 or self.y > 552:
             screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), sprites.SMALL_MARIO_JUMP)
+        elif self.velocity_x != 0:
+            # Only update animation every few frames
+            if self.animation_counter < self.animation_speed:
+                sprite_index = (self.animation_counter // (self.animation_speed // 3)) % 3  # Calculate current frame index
+                screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), sprites.SMALL_MARIO_MOVE[sprite_index])
+                self.animation_counter += 1
+            else:
+                self.animation_counter = 0  # Reset animation counter
         else:
             screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), self.sprite)  # Draw player sprite on screen
 
