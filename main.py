@@ -3,17 +3,21 @@ from pygame.locals import *
 import menu
 import sprites
 from player import Player
+import camera
 
+SCREEN_WIDTH, SCREEN_HEIGHT = 744, 672
 
 pg.init()
 
-screen_width, screen_height = 744, 672
-screen = pg.display.set_mode((screen_width, screen_height))
+screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pg.display.set_caption("Super Mario Bros 1-1")
 
 player = Player(100,552)
+camera_x = 0
+camera_y = 0
 
 background = sprites.background.convert()
+background_x = 0
 
 show_menu = True
 while show_menu:
@@ -37,10 +41,30 @@ while running:
             if event.key == K_LEFT or event.key == K_RIGHT:
                 player.stop_x_movement()
 
-    screen.blit(background, (0,0))
-    player.update()
+    player_position = player.update()
+    camera_x = max(0, min(camera_x, 10176 - SCREEN_WIDTH))
+    camrea_y = max(0, min(camera_y, 672 - SCREEN_HEIGHT))
+    scroll_speed = int(player.velocity_x)
+    background_x -= scroll_speed
+
+    if player.velocity_x > 0:
+        background_x -= abs(player.velocity_x)
+    elif player.velocity_x < 0:
+        background_x += abs(player.velocity_x)
+
+    if player.velocity_x != 0:
+        velocity_int = int(player.velocity_x)
+        background.scroll(-velocity_int, 0)
+    if background_x < 0:
+        background_x = 0
+    elif background_x > background.get_width() - SCREEN_WIDTH:
+        background_x = background.get_width() - SCREEN_WIDTH
+
+    #screen.blit(background, (-background_x,0), (camera_x, camera_y, SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen.blit(background, (-background_x,0))
+
     player.check_collision()
-    player.draw(screen)
+    player.draw(screen, camera_x, camera_y)
     pg.display.flip()
 
 pg.quit()

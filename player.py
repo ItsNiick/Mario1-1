@@ -29,6 +29,8 @@ class Player:
             self.is_jumping = False
             self.velocity_y = 0
 
+        return self.x, self.y
+
     def jump(self):
         if not self.is_jumping:
             self.is_jumping = True
@@ -46,8 +48,9 @@ class Player:
     def stop_y_movement(self):
         self.velocity_y = 0  # Stop vertical movement
 
-    def draw(self, screen):
-        screen.blit(sprites.tile_set, (self.x, self.y), self.sprite)  # Draw player sprite on screen
+    def draw(self, screen, camera_x, camera_y):
+        screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), self.sprite)  # Draw player sprite on screen
+
 
     def check_collision(self):
         min_x = 0
