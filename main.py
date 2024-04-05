@@ -3,6 +3,7 @@ from pygame.locals import *
 import menu
 import sprites
 from player import Player
+import map
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 744, 672
 
@@ -66,6 +67,12 @@ while running:
 
     #screen.blit(background, (-background_x,0), (camera_x, camera_y, SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(background, (-camera_x,0))
+
+    for collider in map.floor_colliders:
+        pg.draw.rect(screen, (0, 255, 0), pg.Rect(collider.x - camera_x, collider.y - camera_y, collider.w, collider.h))
+    for collider in map.pipe_colliders:
+        pg.draw.rect(screen, (255, 0, 0), pg.Rect(collider.x - camera_x, collider.y - camera_y, collider.w, collider.h))
+
 
     player.check_collision()
     player.draw(screen, camera_x, camera_y)

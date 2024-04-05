@@ -24,10 +24,16 @@ class Player:
         self.animation_speed = 1500
         self.sprite = sprites.SMALL_MARIO_IDLE  # Initial sprite
 
+        self.rect = pg.Rect(x, y, self.width, self.height)
+
     def update(self):
         # Update player position based on velocity
         self.x += self.velocity_x
         self.y += self.velocity_y
+
+        # Update player collision rectangle
+        self.rect.x = self.velocity_x
+        self.rect.y = self.velocity_y
 
         if not self.is_jumping:
             self.velocity_y += self.gravity
