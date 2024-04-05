@@ -59,7 +59,6 @@ class Player:
     def move_left(self):
         self.velocity_x = -0.3  # Set horizontal velocity for moving left
 
-
     def move_right(self):
         self.velocity_x = 0.3  # Set horizontal velocity for moving right
 
@@ -90,8 +89,6 @@ class Player:
                 self.rect.bottom = collider.top
                 self.is_jumping = False
                 self.velocity_y = 0
-                if self.rect.centerx == collider.centerx - 0.1 or self.rect.centery == collider.centery - 0.1:
-                    self.velocity_x = 0
 
         for collider in pipe_colliders:
             if self.rect.colliderect(collider):
@@ -117,18 +114,15 @@ class Player:
             if self.rect.colliderect(collider):
                 dx = self.rect.centerx - collider.centerx
                 dy = self.rect.centery - collider.centery
-
                 if abs(dx) > abs(dy):  # Horizontal collision
                     if dx > 0:  # Moving right; Hit the left side of the brick
                         self.rect.right = collider.left
                     else:  # Moving left; Hit the right side of the brick
                         self.rect.left = collider.right
-                    self.velocity_x = 0
                 else:  # Vertical collision
                     if dy > 0:  # Moving down; Hit the top side of the brick
                         self.rect.bottom = collider.top
                         self.is_jumping = False
-                        self.velocity_y = 0
                     else:  # Moving up; Hit the bottom side of the brick
                         self.rect.top = collider.bottom
                         self.velocity_y = 0
@@ -137,18 +131,15 @@ class Player:
             if self.rect.colliderect(collider):
                 dx = self.rect.centerx - collider.centerx
                 dy = self.rect.centery - collider.centery
-
                 if abs(dx) > abs(dy):  # Horizontal collision
                     if dx > 0:  # Moving right; Hit the left side of the brick
                         self.rect.right = collider.left
                     else:  # Moving left; Hit the right side of the brick
                         self.rect.left = collider.right
-                    self.velocity_x = 0
                 else:  # Vertical collision
                     if dy > 0:  # Moving down; Hit the top side of the brick
                         self.rect.bottom = collider.top
                         self.is_jumping = False
-                        self.velocity_y = 0
                     else:  # Moving up; Hit the bottom side of the brick
                         self.rect.top = collider.bottom
                         self.velocity_y = 0
