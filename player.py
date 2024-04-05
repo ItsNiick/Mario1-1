@@ -50,6 +50,8 @@ class Player:
             self.initial_jump_y = self.y
             self.velocity_y = self.jump_speed
             self.can_jump = False
+            #jump_sound = pg.mixer.Sound('sounds/big_jump.ogg')
+            #jump_sound.play()
 
     def move_left(self):
         self.velocity_x = -0.2  # Set horizontal velocity for moving left
