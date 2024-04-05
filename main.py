@@ -4,6 +4,8 @@ import menu
 import sprites
 from player import Player
 from koopa import Koopa
+from coins import Coin
+from timer import Timer
 #from sounds import sound_effect
 #from camera import Camera
 
@@ -39,7 +41,12 @@ koopa = Koopa(100,100)
 spawn_timer = 0 
 spawn_interval = 5000 #5000 = 5 seconds
 koopas = []
+coin_points = [] #calling to points
 clock = pg.time.Clock()
+#timer = Timer()
+#timer.start()
+timer = pg.time.get_ticks()
+game_time = 60000 #60 seconds = 1 min for players to play the game before hitting game over
 
 while running:
     for event in pg.event.get():
@@ -67,8 +74,8 @@ while running:
     #camera_y = max(0, min(player.rect.y - SCREEN_HEIGHT // 2, 672 - SCREEN_HEIGHT))
     scroll_speed = int(player.velocity_x)
     background_x -= scroll_speed
-
-
+    
+  
 
 
     if player.velocity_x > 0:
@@ -91,6 +98,30 @@ while running:
     player.draw(screen, camera_x, camera_y)
 
 
+    
+
+    #coins (still need to modify)
+    for coin in coin_points:
+        if player.rect.colliderect(coin.rect):
+            coin_sound = pg.mixer.Sound('sounds/coin.ogg')
+            coin_sound.play()
+            coin_points.remove(coin)
+        coin.update()
+        coin.draw(screen)
+
+
+    #time for the game
+    elapsed_time = pg.time.get_ticks() - timer
+    if elapsed_time >= game_time:
+        end_sound = pg.mixer.Sound('sounds/death.wav')
+        end_sound.play()
+        menu_sound.stop()
+        print("Game Over")
+        #timer = pg.time.get_ticks() 
+        while pg.mixer.get_busy():
+            pass
+        running = False #this should stop the game
+
 
     #calling to koopas
     spawn_timer += clock.tick()
@@ -100,6 +131,10 @@ while running:
         #spawn_koopa = Koopa(100,100)
         spawn_koopa = Koopa(800,535) #koopa spawn set to every 5 seconds on the very right side
         koopas.append(spawn_koopa)
+        coin = Coin(700,350)
+        coin_points.append(coin)
+
+        
     for koopa in koopas:
         koopa.update()
         koopa.draw(screen)

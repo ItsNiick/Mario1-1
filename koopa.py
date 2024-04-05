@@ -18,8 +18,12 @@ class Koopa:
         self.sprite_index = (self.sprite_index + 1) % len(sprites.KOOPA)
         self.koopa_velocity_x = -0.05
 
-    def move_right(self):
-        self.koopa_velocity_x = 0.1  # Set horizontal velocity for moving right
+    #def move_right(self):
+        #self.koopa_velocity_x = 0.1  # Set horizontal velocity for moving right
+    
+    #def move_left(self):
+        #self.koopa_velocity_x = -0.1  # Set horizontal velocity for moving right
+    
 
     def draw(self, screen):
         screen.blit(sprites.tile_set, (self.koopa_x, self.koopa_y), sprites.KOOPA[self.sprite_index])
