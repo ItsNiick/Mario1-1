@@ -17,7 +17,7 @@ def display_menu(screen):
                 pg.quit()
                 quit()
             elif event.type == KEYDOWN:
-                if event.key == K_RETURN:
+                if event.key == K_RETURN or event.key == K_KP_ENTER:
                     show_menu = False
                 elif event.key == K_UP:
                     selected_option = (selected_option - 1) % 2
