@@ -2,6 +2,7 @@ import pygame as pg
 from pygame.locals import *
 import sprites
 
+
 class Player:
     def __init__(self, x, y):
         self.x = x  # Initial x position
@@ -11,9 +12,10 @@ class Player:
         self.velocity_x = 0  # Initial x velocity
         self.velocity_y = 0  # Initial y velocity
         self.is_jumping = False  # Flag to indicate if the player is jumping
-        self.jump_speed = -0.1
+        self.jump_speed = -0.15
         self.gravity = 0.2
-        self.jump_height = y - 200
+        self.jump_height = y - 240
+        self.can_jump = True
         self.sprite = sprites.SMALL_MARIO_IDLE  # Initial sprite
         self.rect = pg.Rect(self.x,self.y, self.width, self.height)
 
@@ -36,9 +38,13 @@ class Player:
         return self.x, self.y
 
     def jump(self):
-        if not self.is_jumping:
+        if not self.is_jumping: #check to see if players is not jumping
             self.is_jumping = True
             self.velocity_y = self.jump_speed
+            self.can_jump = False
+            jump_sound = pg.mixer.Sound('sounds/big_jump.ogg')
+            jump_sound.play()
+        
 
     def move_left(self):
         self.velocity_x = 0.1  # Set horizontal velocity for moving left

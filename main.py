@@ -3,6 +3,8 @@ from pygame.locals import *
 import menu
 import sprites
 from player import Player
+from koopa import Koopa
+#from sounds import sound_effect
 #from camera import Camera
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 744, 672
@@ -29,6 +31,16 @@ while show_menu:
 
 # Game loop
 running = True
+#clock = pg.time.Clock() #call to the clock
+#start_time = pg.time.get_ticks() 
+
+#koopa
+koopa = Koopa(100,100)
+spawn_timer = 0 
+spawn_interval = 5000 #5000 = 5 seconds
+koopas = []
+clock = pg.time.Clock()
+
 while running:
     for event in pg.event.get():
         if event.type == QUIT:
@@ -78,7 +90,21 @@ while running:
     player.check_collision()
     player.draw(screen, camera_x, camera_y)
 
-    
+
+
+    #calling to koopas
+    spawn_timer += clock.tick()
+    if spawn_timer >= spawn_interval:
+        spawn_timer -= spawn_interval
+
+        #spawn_koopa = Koopa(100,100)
+        spawn_koopa = Koopa(800,535) #koopa spawn set to every 5 seconds on the very right side
+        koopas.append(spawn_koopa)
+    for koopa in koopas:
+        koopa.update()
+        koopa.draw(screen)
+
+
     pg.display.flip()
 
 pg.quit()
