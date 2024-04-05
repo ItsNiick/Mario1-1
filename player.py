@@ -11,17 +11,15 @@ class Player:
 
         self.velocity_x = 0  # Initial x velocity
         self.velocity_y = 0  # Initial y velocity
-        self.acceleration = 0.01  # Adjust this value to control acceleration
-        self.deceleration = 0.02  # Adjust this value to control deceleration
 
         self.is_jumping = False  # Flag to indicate if the player is jumping
-        self.jump_speed = -0.15
-        self.gravity = 0.2
-        self.jump_height = y - 240
+        self.jump_speed = -0.25
+        self.gravity = 0.1
+        self.jump_height = 240
         self.can_jump = True
         
         self.animation_counter = 0
-        self.animation_speed = 1500
+        self.animation_speed = 1000
         self.sprite = sprites.SMALL_MARIO_IDLE  # Initial sprite
 
         self.rect = pg.Rect(x, y, self.width, self.height)
@@ -32,13 +30,13 @@ class Player:
         self.y += self.velocity_y
 
         # Update player collision rectangle
-        self.rect.x = self.velocity_x
-        self.rect.y = self.velocity_y
+        self.rect.x = self.x
+        self.rect.y = self.y
 
         if not self.is_jumping:
             self.velocity_y += self.gravity
-            if self.velocity_y > 0.1:
-                self.velocity_y = 0.1
+            if self.velocity_y > 0.2:
+                self.velocity_y = 0.2
         if self.is_jumping and self.y <= self.jump_height:
             self.is_jumping = False
             self.velocity_y = 0
@@ -49,15 +47,16 @@ class Player:
     def jump(self):
         if self.can_jump and self.velocity_y == 0:
             self.is_jumping = True
+            self.initial_jump_y = self.y
             self.velocity_y = self.jump_speed
             self.can_jump = False
 
     def move_left(self):
-        self.velocity_x = -0.075  # Set horizontal velocity for moving left
+        self.velocity_x = -0.2  # Set horizontal velocity for moving left
 
 
     def move_right(self):
-        self.velocity_x = 0.075  # Set horizontal velocity for moving right
+        self.velocity_x = 0.2  # Set horizontal velocity for moving right
 
     def stop_x_movement(self):
         self.velocity_x = 0  # Stop horizontal movement
@@ -66,7 +65,7 @@ class Player:
         self.velocity_y = 0  # Stop vertical movement
 
     def draw(self, screen, camera_x, camera_y):
-        if self.is_jumping or self.y < 552 or self.y > 552:
+        if self.is_jumping:
             screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), sprites.SMALL_MARIO_JUMP)
         elif self.velocity_x != 0:
             # Only update animation every few frames
@@ -80,17 +79,30 @@ class Player:
             screen.blit(sprites.tile_set, (self.x - camera_x, self.y - camera_y), self.sprite)  # Draw player sprite on screen
 
 
-    def check_collision(self):
-        min_x = 0
-        max_x = 10176
-        min_y = 552
+    def check_collision(self, floor_colliders, pipe_colliders, brick_colliders, mystery_colliders):
+        for collider in floor_colliders:
+            if self.rect.colliderect(collider):
+                self.rect.bottom = collider.top
+                self.is_jumping = False
+                self.velocity_y = 0
 
-        if self.x < min_x:
-            self.x = min_x
-        elif self.x > max_x:
-            self.x = max_x
 
-        if self.y > min_y:
-            self.y = min_y
-            self.is_jumping = False
-            self.velocity_y = 0
+        for collider in pipe_colliders:
+            if self.rect.colliderect(collider):
+                self.rect.bottom = collider.top
+                self.is_jumping = False
+                self.velocity_y = 0
+                if self.rect.left == collider.right or self.rect.right == collider.left:
+                    self.velocity_x = 0
+
+        for collider in brick_colliders:
+            if self.rect.colliderect(collider):
+                self.rect.bottom = collider.top
+                self.is_jumping = False
+                self.velocity_y = 0
+                
+        for collider in mystery_colliders:
+            if self.rect.colliderect(collider):
+                self.rect.bottom = collider.top
+                self.is_jumping = False
+                self.velocity_y = 0

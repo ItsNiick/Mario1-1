@@ -37,7 +37,7 @@ while running:
                 player.move_left()
             elif event.key == K_RIGHT:
                 player.move_right()
-            elif event.key == K_UP:
+            elif event.key == K_UP or event.key == K_SPACE:
                 player.jump()
         elif event.type == KEYUP:
             if event.key == K_LEFT or event.key == K_RIGHT:
@@ -56,6 +56,7 @@ while running:
         #background_x += abs(player.velocity_x)
     background_x = max(0, background_x)
 
+
     #if player.velocity_x != 0:
         #velocity_int = int(player.velocity_x)
         #background.scroll(-velocity_int, 0)
@@ -72,9 +73,13 @@ while running:
         pg.draw.rect(screen, (0, 255, 0), pg.Rect(collider.x - camera_x, collider.y - camera_y, collider.w, collider.h))
     for collider in map.pipe_colliders:
         pg.draw.rect(screen, (255, 0, 0), pg.Rect(collider.x - camera_x, collider.y - camera_y, collider.w, collider.h))
+    for collider in map.brick_colliders:
+        pg.draw.rect(screen, (88, 57, 39), pg.Rect(collider.x - camera_x, collider.y - camera_y, collider.w, collider.h))
+    for colliders in map.mystery_colliders:
+        pg.draw.rect(screen, (255, 255, 0), pg.Rect(collider.x - camera_x, collider.y - camera_y, collider.w, collider.h))
 
 
-    player.check_collision()
+    player.check_collision(map.floor_colliders, map.pipe_colliders, map.brick_colliders, map.mystery_colliders)
     player.draw(screen, camera_x, camera_y)
     pg.display.flip()
 
