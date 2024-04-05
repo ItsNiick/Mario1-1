@@ -9,14 +9,15 @@ class Player:
         self.width = 48  # Player width
         self.height = 48  # Player height
 
+        self.is_jumping = False  # Flag to indicate if the player is jumping
+        self.jump_speed = -0.5
+        self.gravity = 1
+        self.jump_height = 250
+        self.can_jump = True
+        self.initial_jump_y = 0
+
         self.velocity_x = 0  # Initial x velocity
         self.velocity_y = 0  # Initial y velocity
-
-        self.is_jumping = False  # Flag to indicate if the player is jumping
-        self.jump_speed = -0.25
-        self.gravity = 0.1
-        self.jump_height = 240
-        self.can_jump = True
         
         self.animation_counter = 0
         self.animation_speed = 1000
@@ -35,12 +36,14 @@ class Player:
 
         if not self.is_jumping:
             self.velocity_y += self.gravity
-            if self.velocity_y > 0.2:
-                self.velocity_y = 0.2
-        if self.is_jumping and self.y <= self.jump_height:
+            if self.velocity_y > 0.35:
+                self.velocity_y = 0.35
+        #if self.is_jumping and self.y <= self.jump_height:
+        if self.is_jumping and self.y <= self.initial_jump_y - self.jump_height:
             self.is_jumping = False
             self.velocity_y = 0
             self.can_jump = True
+
 
         return self.x, self.y
 
@@ -50,15 +53,15 @@ class Player:
             self.initial_jump_y = self.y
             self.velocity_y = self.jump_speed
             self.can_jump = False
-            #jump_sound = pg.mixer.Sound('sounds/big_jump.ogg')
-            #jump_sound.play()
+            jump_sound = pg.mixer.Sound('sounds/big_jump.ogg')
+            jump_sound.play()
 
     def move_left(self):
-        self.velocity_x = -0.2  # Set horizontal velocity for moving left
+        self.velocity_x = -0.3  # Set horizontal velocity for moving left
 
 
     def move_right(self):
-        self.velocity_x = 0.2  # Set horizontal velocity for moving right
+        self.velocity_x = 0.3  # Set horizontal velocity for moving right
 
     def stop_x_movement(self):
         self.velocity_x = 0  # Stop horizontal movement
@@ -87,24 +90,65 @@ class Player:
                 self.rect.bottom = collider.top
                 self.is_jumping = False
                 self.velocity_y = 0
-
+                if self.rect.centerx == collider.centerx - 0.1 or self.rect.centery == collider.centery - 0.1:
+                    self.velocity_x = 0
 
         for collider in pipe_colliders:
             if self.rect.colliderect(collider):
-                self.rect.bottom = collider.top
-                self.is_jumping = False
-                self.velocity_y = 0
-                if self.rect.left == collider.right or self.rect.right == collider.left:
-                    self.velocity_x = 0
+                dx = self.rect.centerx - collider.centerx
+                dy = self.rect.centery - collider.centery
 
+                if abs(dx) > abs(dy):  # Horizontal collision
+                    if dx > 0:  # Moving right; Hit the left side of the pipe
+                        self.rect.right = collider.left
+                    else:  # Moving left; Hit the right side of the pipe
+                        self.rect.left = collider.right
+                    self.velocity_x = 0
+                else:  # Vertical collision
+                    if dy > 0:  # Moving down; Hit the top side of the pipe
+                        self.rect.bottom = collider.top
+                        self.is_jumping = False
+                        self.velocity_y = 0
+                    else:  # Moving up; Hit the bottom side of the pipe
+                        self.rect.top = collider.bottom
+                        self.velocity_y = 0
+        
         for collider in brick_colliders:
             if self.rect.colliderect(collider):
-                self.rect.bottom = collider.top
-                self.is_jumping = False
-                self.velocity_y = 0
+                dx = self.rect.centerx - collider.centerx
+                dy = self.rect.centery - collider.centery
+
+                if abs(dx) > abs(dy):  # Horizontal collision
+                    if dx > 0:  # Moving right; Hit the left side of the brick
+                        self.rect.right = collider.left
+                    else:  # Moving left; Hit the right side of the brick
+                        self.rect.left = collider.right
+                    self.velocity_x = 0
+                else:  # Vertical collision
+                    if dy > 0:  # Moving down; Hit the top side of the brick
+                        self.rect.bottom = collider.top
+                        self.is_jumping = False
+                        self.velocity_y = 0
+                    else:  # Moving up; Hit the bottom side of the brick
+                        self.rect.top = collider.bottom
+                        self.velocity_y = 0
                 
         for collider in mystery_colliders:
             if self.rect.colliderect(collider):
-                self.rect.bottom = collider.top
-                self.is_jumping = False
-                self.velocity_y = 0
+                dx = self.rect.centerx - collider.centerx
+                dy = self.rect.centery - collider.centery
+
+                if abs(dx) > abs(dy):  # Horizontal collision
+                    if dx > 0:  # Moving right; Hit the left side of the brick
+                        self.rect.right = collider.left
+                    else:  # Moving left; Hit the right side of the brick
+                        self.rect.left = collider.right
+                    self.velocity_x = 0
+                else:  # Vertical collision
+                    if dy > 0:  # Moving down; Hit the top side of the brick
+                        self.rect.bottom = collider.top
+                        self.is_jumping = False
+                        self.velocity_y = 0
+                    else:  # Moving up; Hit the bottom side of the brick
+                        self.rect.top = collider.bottom
+                        self.velocity_y = 0

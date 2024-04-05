@@ -3,8 +3,9 @@ from sprites import level_1_1
 
 map_width, map_height = level_1_1.size
 TILE_SIZE = 48
+TILE_DEPTH = 96
 VERTICAL_OFFSET = 0.5
-PIPE_SIZE = 192
+PIPE_SIZE = 240
 
 BLACK = (0,0,0,255)
 RED = (255,0,0,255)
@@ -21,7 +22,7 @@ for y in range(0, map_height):
     for x in range(0, map_width):
         pixel_color = level_1_1.getpixel((x, y))
         if pixel_color == BLACK:
-            floor_colliders.append(pg.Rect(x * TILE_SIZE, (y + VERTICAL_OFFSET) * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+            floor_colliders.append(pg.Rect(x * TILE_SIZE, (y + VERTICAL_OFFSET) * TILE_SIZE, TILE_SIZE, TILE_DEPTH))
         elif pixel_color == RED:
             pipe_rect = pg.Rect(x * TILE_SIZE, (y + VERTICAL_OFFSET) * TILE_SIZE, TILE_SIZE * 2, PIPE_SIZE)
             pipe_colliders.append(pipe_rect)
